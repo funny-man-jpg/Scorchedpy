@@ -8,55 +8,8 @@ class Game:
 
     def display_frame(self, screen):
         """ Display everything to the screen for the game. """
-        screen.fill((0, 204, 255))
-        color = (191, 255, 0)
-        pygame.draw.rect(screen, color, (0,500,800,200))
-        color = (255, 255, 255)
-        radius = 25
-        pygame.draw.circle(screen, color, (50, 50), radius)
-        pygame.draw.circle(screen, color, (60, 60), radius)
-        pygame.draw.circle(screen, color, (80, 30), radius)
-        pygame.draw.circle(screen, color, (100, 40), radius)
-        radius = 40
-        pygame.draw.circle(screen, color, (250, 50), radius)
-        pygame.draw.circle(screen, color, (260, 60), radius)
-        pygame.draw.circle(screen, color, (280, 30), radius)
-        pygame.draw.circle(screen, color, (300, 40), radius)
-        radius = 20
-        pygame.draw.circle(screen, color, (550, 50), radius)
-        pygame.draw.circle(screen, color, (560, 60), radius)
-        pygame.draw.circle(screen, color, (580, 30), radius)
-        pygame.draw.circle(screen, color, (600, 40), radius)
-        radius = 25
-        pygame.draw.circle(screen, color, (750, 50), radius)
-        pygame.draw.circle(screen, color, (760, 60), radius)
-        pygame.draw.circle(screen, color, (780, 30), radius)
-        pygame.draw.circle(screen, color, (800, 40), radius)
-        color = (255, 215, 0)
-        pygame.draw.rect(screen, color, (200,200,300,400))
-        color = (139,69,19)
-        pygame.draw.polygon(screen, color, [[350, 100], [200, 200], [500, 200]], 0)
-        color = (195, 155, 119)
-        radius = 15
-        pygame.draw.circle(screen, color, (350, 150), radius)
-        color = (0, 204, 255)
-        pygame.draw.rect(screen, color, (250,250,50,50))
-        pygame.draw.rect(screen, color, (400,250,50,50))
-        color = (255, 0, 0)
-        pygame.draw.rect(screen, color, (310,460,80,200))
-        color = (195, 155, 119)
-        pygame.draw.rect(screen, color, (610,560,10,60))
-        color = (34,139,34)
-        radius = 30
-        pygame.draw.circle(screen, color, (600, 560), radius)
-        pygame.draw.circle(screen, color, (630, 560), radius)
-        pygame.draw.circle(screen, color, (615, 520), radius)
-        color = (195, 155, 119)
-        pygame.draw.rect(screen, color, (710,560,10,60))
-        color = (34,139,34)
-        pygame.draw.circle(screen, color, (700, 560), radius)
-        pygame.draw.circle(screen, color, (730, 560), radius)
-        pygame.draw.circle(screen, color, (715, 520), radius)
+        screen.fill((255, 255, 255))
+        
         pygame.display.flip()
 
 
