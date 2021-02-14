@@ -1,4 +1,5 @@
 import pygame
+import math
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -63,7 +64,7 @@ class Game:
                 return True
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:
-                    missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, 1, -1)
+                    missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
                     self.missiles.append(missile) 
 
 
