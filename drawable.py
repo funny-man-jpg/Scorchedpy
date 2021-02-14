@@ -13,7 +13,7 @@ class Drawable:
         if file is not None:
             self.file = file
             image = pygame.image.load(file)
-            self.surfave = pygame.transform.smoothscale(image, (self.width, self.height))
+            self.surface = pygame.transform.smoothscale(image, (self.width, self.height))
 
     def flip(self, horizontal, vertical):
         self.surface = pygame.transform.flip(self.surface, horizontal, vertical)

@@ -12,7 +12,7 @@ from pygame.locals import (
 from drawable import Drawable
 from agent import Agent
 from player import Player
-
+from missiles import Missile
 
 
 
@@ -32,11 +32,11 @@ class Game:
         self.enemy = Player(600,380,50,50)
         self.enemy.loadFile('assets/tank2.png')
         self.enemy.flip(True, False)
-
+        
         self.players = []
         self.players.append(self.player)
         self.players.append(self.enemy)
-
+        self.missiles = []
         
 
     def display_frame(self, screen):
@@ -44,6 +44,10 @@ class Game:
         screen.fill((255, 255, 255))
 
         self.background.draw(screen)
+
+        for missile in self.missiles:
+            if isinstance(missile,Drawable):
+                missile.draw(screen)
 
         for player in self.players:
             if isinstance(player,Drawable):
@@ -57,6 +61,11 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
+            if event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, 1, -1)
+                    self.missiles.append(missile) 
+
 
         return False
     
@@ -69,6 +78,14 @@ class Game:
             done = self.process_events()
             
             self.display_frame(self.screen)
+
+            for player in self.players:
+                if isinstance(player, Agent):
+                    player.update()
+
+            for missile in self.missiles:
+                if isinstance(missile, Agent):
+                    missile.update()
 
             clock.tick(60)
 
