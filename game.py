@@ -66,6 +66,22 @@ class Game:
                 if event.key == K_SPACE:
                     missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
                     self.missiles.append(missile) 
+                if event.key == K_UP:
+                    self.player.power += 1
+                    if self.player.power > 100:
+                        self.player.power = 100
+                if event.key == K_DOWN:
+                    self.player.power -= 1
+                    if self.player.power < 0:
+                        self.player.power = 0  
+                if event.key == K_LEFT:
+                    self.player.angle += 1
+                    if self.player.angle > 180:
+                        self.player.angle = 180
+                if event.key == K_RIGHT:
+                    self.player.angle -= 1
+                    if self.player.angle < 0:
+                        self.player.angle = 0                      
 
 
         return False
