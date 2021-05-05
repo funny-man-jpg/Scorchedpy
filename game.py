@@ -9,6 +9,7 @@ from pygame.locals import (
     KEYDOWN,
     K_SPACE,
     K_LSHIFT,
+    KMOD_LSHIFT,
     QUIT,
 )
 from drawable import Drawable
@@ -60,6 +61,14 @@ class Game:
 
     def process_events(self):
         """ Process all of the events.Return a "True" if we need to close the window. """
+        mods = pygame.key.get_mods()
+        shifted = mods and KMOD_LSHIFT
+
+        angleDelta = 1
+        powerDelta = 2
+        if shifted:
+            angleDelta = 10
+            powerDelta = 10
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
@@ -68,34 +77,25 @@ class Game:
                     missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
                     self.missiles.append(missile) 
                 if event.key == K_UP:
-                    if event.key == K_LSHIFT:
-                        self.player.power += 10
-                    else:
-                        self.player.power += 1
-                    if self.player.power > 100:
-                        self.player.power = 100
+                    self.player.power += powerDelta
+                    
                 if event.key == K_DOWN:
-                    if event.key == K_LSHIFT:
-                        self.player.power -= 10
-                    else:
-                        self.player.power -= 1
-                    if self.player.power < 0:
-                        self.player.power = 0  
-                if event.key == K_LEFT:
-                    if event.key == K_LSHIFT:
-                        self.player.angle += 10
-                    else:
-                        self.player.angle += 1
-                    if self.player.angle > 180:
-                        self.player.angle = 180
-                if event.key == K_RIGHT:
-                    if event.key == K_LSHIFT:
-                        self.player.angle -= 10
-                    else:
-                        self.player.angle -= 1
-                    if self.player.angle < 0:
-                        self.player.angle = 0                      
+                    self.player.power -= powerDelta
 
+                if event.key == K_LEFT:
+                    self.player.angle += angleDelta
+
+                if event.key == K_RIGHT:
+                    self.player.angle -= angleDelta
+
+            if self.player.power > 100:
+                self.player.power = 100
+            if self.player.power < 1:
+                self.player.power = 1
+            if self.player.angle > 180:
+                self.player.angle = 180
+            if self.player.angle < 0:
+                self.player.angle = 0
 
         return False
     
