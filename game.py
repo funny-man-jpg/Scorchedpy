@@ -16,6 +16,7 @@ from drawable import Drawable
 from agent import Agent
 from player import Player
 from missiles import Missile
+from hud import HUD
 
 
 
@@ -40,6 +41,9 @@ class Game:
         self.players.append(self.player)
         self.players.append(self.enemy)
         self.missiles = []
+        self.hud = HUD(0, 0, screen_w, 100)
+        self.hud.setPower(self.player.power)
+        self.hud.setAngle(self.player.angle)
         
 
     def display_frame(self, screen):
@@ -56,6 +60,7 @@ class Game:
             if isinstance(player,Drawable):
                 player.draw(screen)
         
+        self.hud.draw(screen)
         pygame.display.flip()
 
 
@@ -78,29 +83,32 @@ class Game:
                     self.missiles.append(missile) 
                 if event.key == K_UP:
                     self.player.power += powerDelta
-                    
+                    self.hud.resetPower()
+                    self.hud.setPower(self.player.power)
                 if event.key == K_DOWN:
                     self.player.power -= powerDelta
-
+                    self.hud.resetPower()
+                    self.hud.setPower(self.player.power)
                 if event.key == K_LEFT:
                     self.player.angle += angleDelta
-
+                    self.hud.resetAngle()
+                    self.hud.setAngle(self.player.angle)
                 if event.key == K_RIGHT:
                     self.player.angle -= angleDelta
+                    self.hud.resetAngle()
+                    self.hud.setAngle(self.player.angle)
 
-            if self.player.power > 100:
+            if self.player.power >= 100:
                 self.player.power = 100
-            if self.player.power < 1:
+            if self.player.power <= 1:
                 self.player.power = 1
-            if self.player.angle > 180:
+            if self.player.angle >= 180:
                 self.player.angle = 180
-            if self.player.angle < 0:
+            if self.player.angle <= 0:
                 self.player.angle = 0
 
         return False
-    
 
-    
     def run(self):
         done = False
         clock = pygame.time.Clock()
@@ -120,6 +128,3 @@ class Game:
             clock.tick(60)
 
         pygame.quit()
-
-
-    
