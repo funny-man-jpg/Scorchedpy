@@ -17,20 +17,14 @@ class HUD(Drawable):
     def setPower(self, text):
         print(f"HUD: {text}")
         self.powerSurface = self.myfont.render(f"Power: {text}", True, BLUE)
+        self.powerSurface.fill(BLACK, pygame.Rect(20, 20, 200, 100))
         self.surface.blit(self.powerSurface, (20, 20))
 
     def setAngle(self, text):
         print(f"HUD: {text}")
         self.angleSurface = self.myfont.render(f"Angle: {text}", True, BLUE)
-        self.surface.blit(self.angleSurface, (20, 40))
-
-    def resetPower(self):
-        self.powerSurface.fill((BLACK))
-        self.surface.blit(self.powerSurface, (20, 20))
-
-    def resetAngle(self):
-        self.angleSurface.fill((BLACK))
-        self.surface.blit(self.angleSurface, (20, 40))
+        self.powerSurface.fill(BLACK, pygame.Rect(20, 60, 200, 100))
+        self.surface.blit(self.angleSurface, (20, 60))
 
     def draw(self, surface):
         if self.surface is not None:

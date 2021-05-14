@@ -83,20 +83,15 @@ class Game:
                     self.missiles.append(missile) 
                 if event.key == K_UP:
                     self.player.power += powerDelta
-                    self.hud.resetPower()
-                    self.hud.setPower(self.player.power)
                 if event.key == K_DOWN:
                     self.player.power -= powerDelta
-                    self.hud.resetPower()
-                    self.hud.setPower(self.player.power)
                 if event.key == K_LEFT:
                     self.player.angle += angleDelta
-                    self.hud.resetAngle()
-                    self.hud.setAngle(self.player.angle)
                 if event.key == K_RIGHT:
                     self.player.angle -= angleDelta
-                    self.hud.resetAngle()
-                    self.hud.setAngle(self.player.angle)
+                self.hud.setAngle(self.player.angle)
+                self.hud.setPower(self.player.power)
+
 
             if self.player.power >= 100:
                 self.player.power = 100
@@ -106,7 +101,7 @@ class Game:
                 self.player.angle = 180
             if self.player.angle <= 0:
                 self.player.angle = 0
-
+            
         return False
 
     def run(self):
