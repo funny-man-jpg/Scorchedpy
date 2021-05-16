@@ -41,6 +41,8 @@ class Game:
         self.players.append(self.player)
         self.players.append(self.enemy)
         self.missiles = []
+        self.craters = []
+        self.craters.loadFile('assets/crater.png')
         self.hud = HUD(0, 0, screen_w, 100)
         self.hud.setPower(self.player.power)
         self.hud.setAngle(self.player.angle)
@@ -59,6 +61,9 @@ class Game:
         for player in self.players:
             if isinstance(player,Drawable):
                 player.draw(screen)
+
+        #for crater in self.craters:
+            
         
         self.hud.draw(screen)
         pygame.display.flip()
@@ -79,7 +84,7 @@ class Game:
                 return True
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:
-                    missile = Missile(self.player.pos_x+self.player.width / 2, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
+                    missile = Missile(self.player.pos_x+self.player.width + 1, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
                     self.missiles.append(missile) 
                 if event.key == K_UP:
                     self.player.power += powerDelta
@@ -89,18 +94,20 @@ class Game:
                     self.player.angle += angleDelta
                 if event.key == K_RIGHT:
                     self.player.angle -= angleDelta
+                
+
+
+                if self.player.power >= 100:
+                    self.player.power = 100
+                if self.player.power <= 1:
+                    self.player.power = 1
+                if self.player.angle >= 180:
+                    self.player.angle = 180
+                if self.player.angle <= 0:
+                    self.player.angle = 0
+
                 self.hud.setAngle(self.player.angle)
                 self.hud.setPower(self.player.power)
-
-
-            if self.player.power >= 100:
-                self.player.power = 100
-            if self.player.power <= 1:
-                self.player.power = 1
-            if self.player.angle >= 180:
-                self.player.angle = 180
-            if self.player.angle <= 0:
-                self.player.angle = 0
             
         return False
 
@@ -119,6 +126,13 @@ class Game:
             for missile in self.missiles:
                 if isinstance(missile, Agent):
                     missile.update()
+                    for player in self.players:
+                        if isinstance(player, Agent):
+                            if missile.collided(player):
+                                print("Collided")
+                                self.missiles.remove(missile)
+                                #crater = self.
+                                self.players.remove(player)
 
             clock.tick(60)
 

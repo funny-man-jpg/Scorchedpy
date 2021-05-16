@@ -10,6 +10,10 @@ class Agent(Drawable):
         self.accel_x = 0
         self.accel_y = 0
 
+    def collided(self, player):
+        if (self.pos_x < player.pos_x + player.width and self.pos_x + self.width > player.pos_x and self.pos_y < player.pos_y + player.height and self.pos_y + self.height > player.pos_y):
+            return True
+
     def update(self):
         self.vel_x += self.accel_x
         self.vel_y += self.accel_y
