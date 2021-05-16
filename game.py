@@ -42,7 +42,6 @@ class Game:
         self.players.append(self.enemy)
         self.missiles = []
         self.craters = []
-        self.craters.loadFile('assets/crater.png')
         self.hud = HUD(0, 0, screen_w, 100)
         self.hud.setPower(self.player.power)
         self.hud.setAngle(self.player.angle)
@@ -61,6 +60,10 @@ class Game:
         for player in self.players:
             if isinstance(player,Drawable):
                 player.draw(screen)
+
+        for crater in self.craters:
+            if isinstance(crater, Drawable):
+                crater.draw(screen)
 
         #for crater in self.craters:
             
@@ -131,8 +134,11 @@ class Game:
                             if missile.collided(player):
                                 print("Collided")
                                 self.missiles.remove(missile)
-                                #crater = self.
                                 self.players.remove(player)
+                                crater = Drawable(player.pos_x, player.pos_y + 25, 64, 37)
+                                crater.loadFile('assets/crater.png')
+                                self.craters.append(crater)
+                                
 
             clock.tick(60)
 
