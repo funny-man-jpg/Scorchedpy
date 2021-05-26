@@ -1,5 +1,6 @@
 import pygame
 import math
+from pygame import sprite
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -17,6 +18,7 @@ from agent import Agent
 from player import Player
 from missiles import Missile
 from hud import HUD
+from sprite import Sprite
 
 
 
@@ -42,6 +44,7 @@ class Game:
         self.players.append(self.enemy)
         self.missiles = []
         self.craters = []
+        self.explosions = []
         self.hud = HUD(0, 0, screen_w, 100)
         self.hud.setPower(self.player.power)
         self.hud.setAngle(self.player.angle)
@@ -65,6 +68,10 @@ class Game:
             if isinstance(crater, Drawable):
                 crater.draw(screen)
 
+        for explosion in self.explosions:
+            if isinstance(explosion, Drawable):
+                explosion.draw(screen)
+
         #for crater in self.craters:
             
         
@@ -87,7 +94,16 @@ class Game:
                 return True
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:
-                    missile = Missile(self.player.pos_x+self.player.width + 1, self.player.pos_y + 15, 4, 4, math.cos(math.radians(self.player.angle))*self.player.power/100, math.sin(math.radians(self.player.angle))*-1*self.player.power/100)
+                    vel_x = self.player.calc_player_vel_x()
+                    vel_y = self.player.calc_player_vel_y()
+                    missile = Missile(
+                        self.player.pos_x+self.player.width /2 + vel_x*30,
+                        self.player.pos_y + 15 + vel_y*30, 
+                        4, 
+                        4, 
+                        self.player.calc_player_vel_x(),
+                        self.player.calc_player_vel_y()
+                        )
                     self.missiles.append(missile) 
                 if event.key == K_UP:
                     self.player.power += powerDelta
@@ -117,6 +133,7 @@ class Game:
     def run(self):
         done = False
         clock = pygame.time.Clock()
+        count = 0
         while not done:
             done = self.process_events()
             
@@ -135,11 +152,17 @@ class Game:
                                 print("Collided")
                                 self.missiles.remove(missile)
                                 self.players.remove(player)
-                                crater = Drawable(player.pos_x, player.pos_y + 25, 64, 37)
+                                crater = Drawable(player.pos_x, player.pos_y + 30, 64, 20)
                                 crater.loadFile('assets/crater.png')
                                 self.craters.append(crater)
+
+
+                                explosion = Sprite(player.pos_x - 25, player.pos_y - 50, 100, 100)
+                                explosion.loadFile('assets/boom.png', 3, 4)
+                                explosion.start()
+                                self.explosions.append(explosion)
                                 
 
             clock.tick(60)
-
+            count += 1
         pygame.quit()
