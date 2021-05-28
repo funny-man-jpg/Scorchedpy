@@ -47,3 +47,5 @@ class SpriteSheet:
 
         grid_images = self.images_at(sprite_rects)
         print(f"Loaded {len(grid_images)} grid images")
+
+        return grid_images
