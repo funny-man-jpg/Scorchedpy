@@ -67,12 +67,10 @@ class Game:
         for crater in self.craters:
             if isinstance(crater, Drawable):
                 crater.draw(screen)
-
+        
         for explosion in self.explosions:
             if isinstance(explosion, Drawable):
                 explosion.draw(screen)
-
-        #for crater in self.craters:
             
         
         self.hud.draw(screen)
@@ -161,6 +159,10 @@ class Game:
                                 explosion.loadFile('assets/boom.png', 3, 4)
                                 explosion.start()
                                 self.explosions.append(explosion)
+                                if count % 5:
+                                    for explosion in self.explosions:
+                                        if isinstance(explosion, Agent):
+                                            explosion.update()
                                 
 
             clock.tick(60)
