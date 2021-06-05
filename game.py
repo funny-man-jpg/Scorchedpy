@@ -33,9 +33,10 @@ class Game:
         pygame.display.set_caption("Scorched Py")
         self.background = Drawable(0,0,screen_w,screen_h)
         self.background.loadFile('assets/background.jpg')
-        self.player = Player(100, 380, 50 ,50)
+        self.ground_y = 410
+        self.player = Player(100, self.ground_y - 30, 50 ,50)
         self.player.loadFile('assets/tank1.png')
-        self.enemy = Player(600,380,50,50)
+        self.enemy = Player(600, self.ground_y - 30, 50, 50)
         self.enemy.loadFile('assets/tank2.png')
         self.enemy.flip(True, False)
         
@@ -128,6 +129,20 @@ class Game:
             
         return False
 
+    def onMissileHit(self, missile, pos_x, pos_y):
+        print("Collided")
+        self.missiles.remove(missile)
+        
+        crater = Drawable(pos_x, pos_y + 30, 64, 20)
+        crater.loadFile('assets/crater.png')
+        self.craters.append(crater)
+
+
+        explosion = Sprite(pos_x - 25, pos_y - 50, 100, 100)
+        explosion.loadFile('assets/boom.png', 3, 4)
+        explosion.start()
+        self.explosions.append(explosion)
+
     def run(self):
         done = False
         clock = pygame.time.Clock()
@@ -136,6 +151,11 @@ class Game:
             done = self.process_events()
             
             self.display_frame(self.screen)
+
+            if count % 5 == 0:
+                for explosion in self.explosions:
+                    if isinstance(explosion, Agent):
+                        explosion.update()
 
             for player in self.players:
                 if isinstance(player, Agent):
@@ -147,22 +167,10 @@ class Game:
                     for player in self.players:
                         if isinstance(player, Agent):
                             if missile.collided(player):
-                                print("Collided")
-                                self.missiles.remove(missile)
+                                self.onMissileHit(missile, player.pos_x, player.pos_y + 30)
                                 self.players.remove(player)
-                                crater = Drawable(player.pos_x, player.pos_y + 30, 64, 20)
-                                crater.loadFile('assets/crater.png')
-                                self.craters.append(crater)
-
-
-                                explosion = Sprite(player.pos_x - 25, player.pos_y - 50, 100, 100)
-                                explosion.loadFile('assets/boom.png', 3, 4)
-                                explosion.start()
-                                self.explosions.append(explosion)
-                                if count % 5:
-                                    for explosion in self.explosions:
-                                        if isinstance(explosion, Agent):
-                                            explosion.update()
+                    if missile.pos_y >= self.ground_y:
+                        self.onMissileHit(missile, missile.pos_x, missile.pos_y)
                                 
 
             clock.tick(60)

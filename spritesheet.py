@@ -38,14 +38,15 @@ class SpriteSheet:
         y_sprite_size = (sheet_height - 2 * y_margin - (num_rows - 1) * y_padding) / num_rows
 
         sprite_rects = []
-        for num_rows in range(num_rows):
-            for num_cols in range(num_cols):
-                x = x_margin + num_cols * (x_sprite_size + x_padding)
-                y = y_margin + num_rows * (y_sprite_size + y_padding)
+        for row_num in range(num_rows):
+            for col_num in range(num_cols):
+                # Position of sprite rect is margin + one sprite size
+                #   and one padding size for each row. Same for y.
+                x = x_margin + col_num * (x_sprite_size + x_padding)
+                y = y_margin + row_num * (y_sprite_size + y_padding)
                 sprite_rect = (x, y, x_sprite_size, y_sprite_size)
                 sprite_rects.append(sprite_rect)
 
         grid_images = self.images_at(sprite_rects)
         print(f"Loaded {len(grid_images)} grid images")
-
         return grid_images
