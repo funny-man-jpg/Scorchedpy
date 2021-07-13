@@ -35,10 +35,14 @@ class Game:
         self.background.loadFile('assets/background.jpg')
         self.ground_y = 410
         self.player = Player(100, self.ground_y - 30, 50 ,50)
-        self.player.loadFile('assets/tank1.png')
+        self.player.loadFile('assets/tank2_sprite.png', 1, 13)
+        self.player.setAnimated(False)
+        self.player.setIndex(0)
         self.enemy = Player(600, self.ground_y - 30, 50, 50)
-        self.enemy.loadFile('assets/tank2.png')
+        self.enemy.loadFile('assets/tank3_sprite.png', 1, 13)
         self.enemy.flip(True, False)
+        self.enemy.setAnimated(False)
+        self.enemy.setIndex(12)
         
         self.players = []
         self.players.append(self.player)

@@ -8,6 +8,8 @@ class Drawable:
         self.width = width
         self.height = height
         self.surface = None
+        self.flipHorizontal = False
+        self.flipVertical = False
 
     def loadFile(self, file):
         if file is not None:
@@ -16,8 +18,10 @@ class Drawable:
             self.surface = pygame.transform.smoothscale(image, (self.width, self.height))
 
     def flip(self, horizontal, vertical):
-        self.surface = pygame.transform.flip(self.surface, horizontal, vertical)
-
+        self.flipHorizontal = horizontal
+        self.flipVertical = vertical
+        
     def draw(self, surface):
         if self.surface is not None:
+            self.surface = pygame.transform.flip(self.surface, self.flipHorizontal, self.flipVertical)
             surface.blit(self.surface,(self.pos_x, self.pos_y))
